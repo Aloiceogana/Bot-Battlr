@@ -1,4 +1,4 @@
-# Bank of Flatiron
+# bots wars battlr
 
 #### Date, 5/6/2024
 
