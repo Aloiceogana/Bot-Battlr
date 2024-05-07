@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import BotCollection from './Components/BotCollection';
-import YourBotArmy from './Components/YourBotArmy';
-import BotSpecs from './Components/BotSpecs';
-import './index.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import BotCollection from "./Components/BotCollection";
+import YourBotArmy from "./Components/YourBotArmy";
+import BotSpecs from "./Components/BotSpecs";
+import "./index.css";
 
 const App = () => {
   const [bots, setBots] = useState([]);
   const [enlistedBots, setEnlistedBots] = useState([]);
-  const [filterClass, setFilterClass] = useState('');
+  const [filterClass, setFilterClass] = useState("");
 
   useEffect(() => {
-    fetch('http://localhost:3000/bots')
+    fetch("http://localhost:3000/bots")
       .then((res) => res.json())
       .then((data) => {
-        console.log('Fetched data:', data);
+        console.log("Fetched data:", data);
         setBots(data);
       });
   }, []);
 
   const handleEnlistBot = (bot) => {
-    const isBotAlreadyEnlisted = enlistedBots.some((b) => b.bot_class === bot.bot_class);
+    const isBotAlreadyEnlisted = enlistedBots.some(
+      (b) => b.bot_class === bot.bot_class
+    );
     if (!isBotAlreadyEnlisted) {
       setEnlistedBots([...enlistedBots, bot]);
       setBots(bots.filter((b) => b.id !== bot.id));
@@ -34,16 +36,16 @@ const App = () => {
 
   const handleDischargeBot = (bot) => {
     fetch(`http://localhost:3000/bots/${bot.id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
       .then(() => {
         setEnlistedBots(enlistedBots.filter((b) => b.id !== bot.id));
         setBots(bots.filter((b) => b.id !== bot.id));
       })
-      .catch((error) => console.error('Error:', error));
+      .catch((error) => console.error("Error:", error));
   };
 
-  console.log('Filtered bots:', bots);
+  console.log("Filtered bots:", bots);
 
   return (
     <Router>
@@ -60,7 +62,11 @@ const App = () => {
         </nav>
         <div className="filter-bar">
           <label htmlFor="filter">Filter by Class:</label>
-          <select id="filter" value={filterClass} onChange={(e) => setFilterClass(e.target.value)}>
+          <select
+            id="filter"
+            value={filterClass}
+            onChange={(e) => setFilterClass(e.target.value)}
+          >
             <option value="">All</option>
             <option value="Support">Support</option>
             <option value="Medic">Medic</option>

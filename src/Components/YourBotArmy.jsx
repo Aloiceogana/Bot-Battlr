@@ -1,20 +1,24 @@
-// YourBotArmy.js
-import React from 'react';
-import BotCard from './BotCard';
+import React from "react";
+import BotCard from "./BotCard";
 
-const YourBotArmy = ({ enlistedBots, handleReleaseBot, handleDischargeBot }) => {
+function YourBotArmy({ army, removeBort, selectBort }) {
+  const bots = army;
   return (
-    <div className="bot-army">
-      {enlistedBots.map((bot) => (
-        <BotCard
-          key={`${bot.id}-${bot.name}`}
-          bot={bot}
-          handleReleaseBot={handleReleaseBot}
-          handleDischargeBot={handleDischargeBot}
-        />
-      ))}
+    <div className="ui segment inverted olive bot-army">
+      <div className="ui five column grid">
+        <div className="row bot-army-row">
+          {bots.map((bot) => (
+            <BotCard
+              key={bot.id}
+              bot={bot}
+              onSelectBot={selectBort}
+              removeBort={removeBort}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
-};
+}
 
 export default YourBotArmy;

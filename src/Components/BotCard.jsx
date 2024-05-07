@@ -1,34 +1,64 @@
-// BotCard.jsx
-import React from 'react';
+import React from "react";
 
-const BotCard = ({ bot, isEnlisted }) => {
+const botTypeClasses = {
+  Assault: "icon military",
+  Defender: "icon shield",
+  Support: "icon plus circle",
+  Medic: "icon ambulance",
+  Witch: "icon magic",
+  Captain: "icon star",
+};
+
+function BotCard({ bot, removeBort, onSelectBot }) {
   return (
-    <div className="bot-card">
-      <img src={bot.avatar_url} alt={bot.name} />
-      <div className="bot-card-content">
-        <h3>{bot.name}</h3>
-        <p>{bot.catchphrase}</p>
-        <div className="bot-specs-stats">
-          <div className="bot-specs-stat">
-            <span>
-              <i className="fa-solid fa-heart-crack"></i> {bot.health}
-            </span>
+    <div className="ui column">
+      <div
+        className="ui card"
+        key={bot.id}
+        onClick={() => {
+          onSelectBot(bot);
+        }}
+      >
+        <div className="image">
+          <img alt="oh no!" src={bot.avatar_url} />
+        </div>
+        <div className="content">
+          <div className="header">
+            {bot.name}
+            <i className={botTypeClasses[bot.bot_class]} />
           </div>
-          <div className="bot-specs-stat">
-            <span>
-              <i className="fa-solid fa-bolt-lightning"></i> {bot.damage}
-            </span>
-          </div>
-          <div className="bot-specs-stat">
-            <span>
-              <i className="fas fa-shield-alt"></i> {bot.armor}
-            </span>
+          <div className="meta text-wrap">
+            <small>{bot.catchphrase}</small>
           </div>
         </div>
-        {isEnlisted && <span className="enlisted-badge">Enlisted</span>}
+        <div className="extra content">
+          <span>
+            <i className="icon heartbeat" />
+            {bot.health}
+          </span>
+
+          <span>
+            <i className="icon lightning" />
+            {bot.damage}
+          </span>
+          <span>
+            <i className="icon shield" />
+            {bot.armor}
+          </span>
+          <span>
+            <div className="ui center aligned segment basic">
+              <button
+                className="ui mini red button"
+                onClick={() => removeBort(bot.id)}
+              >
+                x
+              </button>
+            </div>
+          </span>
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default BotCard;

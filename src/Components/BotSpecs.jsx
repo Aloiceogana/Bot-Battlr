@@ -1,76 +1,69 @@
-// BotSpecs.js
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import React from "react";
 
-const BotSpecs = ({
-  enlistedBots,
-  handleEnlistBot,
-  handleReleaseBot,
-  handleDischargeBot,
-}) => {
-  const { botId } = useParams();
-  const [bot, setBot] = useState(null);
+const botTypeClasses = {
+  Assault: "icon military",
+  Defender: "icon shield",
+  Support: "icon plus circle",
+  Medic: "icon ambulance",
+  Witch: "icon magic",
+  Captain: "icon star",
+};
 
-  useEffect(() => {
-    const fetchBotData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/bots/${botId}`);
-        const data = await response.json();
-        setBot(data);
-      } catch (error) {
-        console.error("Error fetching bot data:", error);
-      }
-    };
-    fetchBotData();
-  }, [botId]);
-
-  if (!bot) {
-    return <div>Loading bot details...</div>;
-  } else if (bot.error) {
-    return <div>Bot not found</div>;
-  }
-
+function BotSpecs({ bot, resetSelectedBot, enlistBot }) {
   return (
-    <div className="bot-specs">
-      <div className="bot-specs-image">
-        <img src={bot.avatar_url} alt={bot.name} />
-      </div>
-      <div className="bot-specs-content">
-        <h2>Name: {bot.name}</h2>
-        <p className="bot-specs-catchphrase">Catchphrase:</p>
-        <p className="catchphrase">{bot.catchphrase}</p>
-        <p className="bot-specs-class">Class: {bot.bot_class}</p>
-        <div className="bot-specs-stats effect">
-          <div className="stat">
-            <span>
-              <i className="fa-solid fa-heart-crack" style={{ color: "#ff0000" }}></i> {bot.health}
-            </span>
+    <div className="ui segment">
+      <div className="ui two column centered grid">
+        <div className="row">
+          <div className="four wide column">
+            <img
+              alt="oh no!"
+              className="ui medium circular image bordered"
+              src={bot.avatar_url}
+            />
           </div>
-          <div className="stat">
-            <span>
-              <i className="fa-solid fa-bolt-lightning" style={{ color: "#FFD43B" }}></i> {bot.damage}
-            </span>
+          <div className="four wide column">
+            <h2>Name: {bot.name}</h2>
+            <p>
+              <strong>Catchphrase: </strong>
+              {bot.catchphrase}
+            </p>
+            <strong>
+              Class: {bot.bot_class}
+              <i className={botTypeClasses[bot.bot_class]} />
+            </strong>
+            <br />
+            <div className="ui segment">
+              <div className="ui three column centered grid">
+                <div className="row">
+                  <div className="column">
+                    <i className="icon large circular red heartbeat" />
+                    <strong>{bot.health}</strong>
+                  </div>
+                  <div className="column">
+                    <i className="icon large circular yellow lightning" />
+                    <strong>{bot.damage}</strong>
+                  </div>
+                  <div className="column">
+                    <i className="icon large circular blue shield" />
+                    <strong>{bot.armor}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              className="ui button fluid"
+              onClick={() => resetSelectedBot()}
+            >
+              Go Back
+            </button>
+            <button className="ui button fluid" onClick={() => enlistBot(bot)}>
+              Enlist
+            </button>
           </div>
-          <div className="stat">
-            <span>
-              <i className="fa-solid fa-bolt-lightning" style={{ color: "green" }}></i> {bot.armor}
-            </span>
-          </div>
-        </div>
-        <div className="bot-specs-buttons">
-          <Link to="/">
-            <button>Back</button>
-          </Link>
-          {enlistedBots.some((b) => b.id === bot.id) ? (
-            <button onClick={() => handleReleaseBot(bot)}>Release</button>
-          ) : (
-            <button onClick={() => handleEnlistBot(bot)}>Enlist</button>
-          )}
-          <button onClick={() => handleDischargeBot(bot)}>Discharge</button>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default BotSpecs;
