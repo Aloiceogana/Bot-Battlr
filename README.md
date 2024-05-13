@@ -1,3 +1,5 @@
+file:///home/aloice/Development/code/phase-2/Bot-Battlr/vid.bot
+
 # bots wars battlr
 
 #### Date, 5/6/2024
