@@ -2,6 +2,8 @@ file:///home/aloice/Development/code/phase-2/Bot-Battlr/vid.bot
 
 # bots wars battlr
 
+![](src/img/GIF_20240514_032135_937.gif)
+
 #### Date, 5/6/2024
 
 ## Description
